@@ -10,8 +10,9 @@ Si la requête était mal formée, elle aurait déclenché 400 Bad Request autom
 
 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 public class ImpossibleAjouterCommandeException extends RuntimeException {
+	private static final long serialVersionUID = -4424044112358811175L;
 
-    public ImpossibleAjouterCommandeException(String message) {
+	public ImpossibleAjouterCommandeException(String message) {
         super(message);
     }
 }
