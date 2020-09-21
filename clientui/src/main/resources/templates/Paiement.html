@@ -23,6 +23,28 @@
                 Si vous vous sentez à l'aise, vous pouvez créer un formulaire pour accepter le numéro de la CB, que vous traiterez dans le contrôleur grâce à
                 un <i>PostMapping</i>.
             </p>
+		
+		      <div>
+		         <table border="1">
+		            <tr>
+		               <th>commandeId</th>
+		               <th>productId</th>
+		               <th>dateCommande</th>
+		               <th>commandePayee</th>
+		               <th>quantite</th>
+		               <th>Montant</th>
+		            </tr>
+		            <tr>
+		               <td th:utext="${commande.id}" class="font-weight-bold">...</td>
+		               <td th:utext="${commande.productId}" class="font-weight-bold">...</td>
+		               <td th:utext="${#calendars.format(commande.dateCommande,'dd MMMM yyyy HH:mm')}" class="font-weight-bold">...</td>
+		               <td th:utext="${commande.commandePayee}" class="font-weight-bold">...</td>
+		               <td th:utext="${commande.quantite}" class="font-weight-bold">...</td>
+		               <td th:utext="${montant}" class="font-weight-bold">...</td>
+		               
+		            </tr>
+		         </table>
+		      </div>
 
             <!-- On passe l'id de la commande ET le montant de celle-ci afin que le contrôleur ait les informations nécessaires pour faire appel au microservice de paiement -->
             <p>

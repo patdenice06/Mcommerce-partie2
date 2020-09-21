@@ -23,16 +23,17 @@
 
             <p th:text="${produit.description}"></p>
             
-            <p th:text="${produit.prix}"></p>
-            
-            <p>
-                <a th:href="@{|/commander-produit/${produit.id}/${produit.prix}||}" class="font-weight-bold">COMMANDER</a>
-            </p>
+            <p th:text="'Prix: ' + ${produit.prix} + ' euros'"></p>
+                        
+            <!-- Formulaire de saisie de la quantité -->            
+		    <form th:action="@{|/commander-produit/${produit.id}/${produit.prix}|}" th:object="${commande}" method="post">
+		        <p>Saisir la quantite: <input type="number" th:field="*{quantite}"/></p>
+		        <p><input type="submit" value="COMMANDER"/></p>
+		    </form>	
+
         </div>
     </div>
-
 </div>
-    
 
 <script type="text/javascript" src="http://localhost:8080/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
 
