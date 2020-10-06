@@ -1,6 +1,7 @@
 package com.mcommandes.web.controller;
 
 
+import com.mcommandes.configurations.ApplicationPropertiesConfiguration;
 import com.mcommandes.dao.CommandesDao;
 import com.mcommandes.model.Commande;
 import com.mcommandes.web.exceptions.CommandeNotFoundException;
@@ -17,11 +18,17 @@ public class CommandeController {
 
     @Autowired
     CommandesDao commandesDao;
+    
+    @Autowired
+    ApplicationPropertiesConfiguration appProperties;
 
     @PostMapping (value = "/commandes")
     public ResponseEntity<Commande> ajouterCommande(@RequestBody Commande commande){
 
         Commande nouvelleCommande = commandesDao.save(commande);
+        
+        // DEBUG
+        System.out.println( "limiteDeCommandes = "+ appProperties.getLimiteDeCommandes() );
 
         if(nouvelleCommande == null) throw new ImpossibleAjouterCommandeException("Impossible d'ajouter cette commande");
 

@@ -1,5 +1,6 @@
 package com.mpaiement.web.controller;
 
+import com.mpaiement.configurations.ApplicationPropertiesConfiguration;
 import com.mpaiement.dao.PaiementDao;
 import com.mpaiement.model.Paiement;
 import com.mpaiement.web.exceptions.PaiementExistantException;
@@ -14,11 +15,16 @@ public class PaiementController {
 
     @Autowired
     PaiementDao paiementDao;
+    
+    @Autowired
+    ApplicationPropertiesConfiguration appProperties;
 
     @PostMapping(value = "/paiement")
     public ResponseEntity<Paiement>  payerUneCommande(@RequestBody Paiement paiement){
 
-
+        // DEBUG
+        System.out.println( "limiteDePaiement = "+ appProperties.getLimiteDePaiement() );    	
+    	
         //Vérifions s'il y a déjà un paiement enregistré pour cette commande
         Paiement paiementExistant = paiementDao.findByidCommande(paiement.getIdCommande());
         if(paiementExistant != null) throw new PaiementExistantException("Cette commande est déjà payée");
