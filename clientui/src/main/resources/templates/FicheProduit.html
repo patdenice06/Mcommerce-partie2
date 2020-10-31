@@ -1,13 +1,13 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Mcommerce</title>
 
-    <link rel="stylesheet" type="text/css"
-          href="http://localhost:8080/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css"/>
+<!-- head metadata fragment-->
+<header th:insert="fragments/general.html :: headerfiles"></header>
 
-</head>
 <body>
+
+<!-- navbar fragment -->
+<div th:insert="fragments/general.html :: header"></div>
 
 
 <div class="container">
@@ -35,7 +35,8 @@
     </div>
 </div>
 
-<script type="text/javascript" src="http://localhost:8080/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
+<!-- script footer fragment-->
+<div th:insert="fragments/general.html :: script-footer"></div>
 
 </body>
 </html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- head metadata fragment-->
+<header th:insert="fragments/general.html :: headerfiles"></header>
+
+<body>
+
+<!-- navbar fragment -->
+<div th:insert="fragments/general.html :: header"></div>
+
+	
+<div class="container">
+    <h2>Table PAIEMENTS</h2>
+    <div class="row col-md-8 table-responsive">
+		<table id="paiements" class="table">
+		    <thead>
+		        <tr>
+		            <th>ID</th>
+		            <th>COMMANDE_ID</th>
+		            <th>COMMANDE</th>
+		            <th>MONTANT</th>
+		            <th>NUMEROCARTE</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr th:each="paiement, rowStat: ${paiements}"
+		        	th:style="${rowStat.odd} ? 'color: gray' : 'color: blue;'">
+		            <td th:text="${paiement.id}">...</td>
+		            <td th:text="${paiement.idCommande}">...</td>
+		            <td><a th:href="@{|/commandes/${paiement.idCommande}|}">voir</a></td>		            
+		            <td th:text="${paiement.montant}">...</td>
+		            <td th:text="${paiement.numeroCarte}">...</td>
+		        </tr>
+		    </tbody>
+		</table>
+	</div>	
+</div>	
+	
+</body>
+
+<!-- script footer fragment-->
+<div th:insert="fragments/general.html :: script-footer"></div>
+
+</html>
