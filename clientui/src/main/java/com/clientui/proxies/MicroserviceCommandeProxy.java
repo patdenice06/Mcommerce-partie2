@@ -1,6 +1,8 @@
 package com.clientui.proxies;
 
 import com.clientui.beans.CommandeBean;
+
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.cloud.openfeign.FeignClient;
@@ -17,4 +19,8 @@ public interface MicroserviceCommandeProxy {
     
     @GetMapping(value = "/commandes/{id}")
     Optional<CommandeBean> recupererUneCommande(@PathVariable("id") int id);
+
+    @GetMapping(value = "/liste-commandes")
+	List<CommandeBean> listeDesCommandes();
+    
 }

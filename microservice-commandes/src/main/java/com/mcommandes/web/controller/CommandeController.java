@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -21,6 +22,14 @@ public class CommandeController {
     
     @Autowired
     ApplicationPropertiesConfiguration appProperties;
+    
+    // Affiche la liste de toutes les commandes disponibles
+    @GetMapping(value = "/liste-commandes")
+    public List<Commande> listeDesCommandes(){
+        List<Commande> commandes = commandesDao.findAll();
+        if(commandes.isEmpty()) throw new CommandeNotFoundException("Aucune commande");
+        return commandes;
+    }
 
     @PostMapping (value = "/commandes")
     public ResponseEntity<Commande> ajouterCommande(@RequestBody Commande commande){

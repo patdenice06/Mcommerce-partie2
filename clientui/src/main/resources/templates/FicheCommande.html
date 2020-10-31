@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- head metadata fragment-->
+<header th:insert="fragments/general.html :: headerfiles"></header>
+
+<body>
+
+<!-- navbar fragment -->
+<div th:insert="fragments/general.html :: header"></div>
+
+<div class="container">
+    <h2>Fiche commande</h2>
+    <div class="row col-md-8 table-responsive">
+		<table id="commande" class="table">
+		    <thead>
+		        <tr>
+		            <th>ID</th>
+		            <th>PRODUIT_ID</th>
+		            <th>PRODUIT</th>
+		            <th>DATE_COMMANDE</th>
+		            <th>QUANTITE</th>
+		            <th>COMMANDE_PAYEE</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr>
+		            <td th:text="${commande.id}">...</td>
+		            <td th:text="${commande.productId}">...</td>
+		            <td><a th:href="@{|/details-produit/${commande.productId}|}">voir</a></td>
+		            <td th:text="${commande.dateCommande}">...</td>
+		            <td th:text="${commande.quantite}">...</td>
+		            <td th:text="${commande.commandePayee}">...</td>
+		        </tr>
+		    </tbody>
+		</table>
+	</div>	
+</div>	
+
+<!-- script footer fragment-->
+<div th:insert="fragments/general.html :: script-footer"></div>
+
+</body>
+</html>

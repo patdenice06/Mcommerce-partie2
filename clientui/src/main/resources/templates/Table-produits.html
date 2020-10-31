@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- head metadata fragment-->
+<header th:insert="fragments/general.html :: headerfiles"></header>
+
+<body>
+
+<!-- navbar fragment -->
+<div th:insert="fragments/general.html :: header"></div>
+
+<div class="container">
+    <h2>Table PRODUITS</h2>
+    <div class="row col-md-8 table-responsive">
+		<table id="produits" class="table">
+		    <thead>
+		        <tr>
+		            <th>ID</th>
+		            <th>PRODUIT</th>
+		            <th>TITRE</th>
+		            <th>DESCRIPTION</th>
+		            <th>IMAGE</th>
+		            <th>PRIX</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr th:each="produit, rowStat: ${produits}"
+		        	th:style="${rowStat.odd} ? 'color: gray' : 'color: blue;'">
+		            <td th:text="${produit.id}">...</td>
+		            <td><a th:href="@{|/details-produit/${produit.id}|}">voir</a></td>
+		            <td th:text="${produit.titre}">...</td>
+		            <td th:text="${produit.description}">...</td>
+		            <td th:text="${produit.image}">...</td>
+		            <td th:text="${produit.prix}">...</td>
+		        </tr>
+		    </tbody>
+		</table>
+	</div>	
+</div>
+    
+    
+<!-- script footer fragment-->
+<div th:insert="fragments/general.html :: script-footer"></div>
+
+</body>
+</html>

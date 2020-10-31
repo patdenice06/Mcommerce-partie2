@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,10 +30,10 @@ public class ClientController {
 	MicroserviceProduitsProxy mProduitsProxy;
 	
     @Autowired
-    private MicroserviceCommandeProxy CommandesProxy;
+    private MicroserviceCommandeProxy mCommandesProxy;
 
     @Autowired
-    private MicroservicePaiementProxy paiementProxy;
+    private MicroservicePaiementProxy mPaiementProxy;
     
     /*
     * Étape (1)
@@ -75,7 +76,7 @@ public class ClientController {
       commande.setDateCommande(new Date());
       commande.setCommandePayee(false);
       
-      CommandeBean commandeAjoutee = CommandesProxy.ajouterCommande(commande);
+      CommandeBean commandeAjoutee = mCommandesProxy.ajouterCommande(commande);
 
 	  //on passe à la vue l'objet commande et le montant de celle-ci afin d'avoir les informations nécessaire pour le paiement
 	  model.addAttribute("commande", commandeAjoutee);
@@ -102,20 +103,20 @@ public class ClientController {
         paiementAExcecuter.setNumeroCarte(numcarte()); // on génère un numéro au hasard pour simuler une CB
 
         // On appel le microservice et (étape 7) on récupère le résultat qui est sous forme ResponseEntity<PaiementBean> ce qui va nous permettre de vérifier le code retour.
-        ResponseEntity<PaiementBean> paiement = paiementProxy.payerUneCommande(paiementAExcecuter);
+        ResponseEntity<PaiementBean> paiement = mPaiementProxy.payerUneCommande(paiementAExcecuter);
 
         Boolean paiementAccepte = false;
         //si le code est autre que 201 CREATED, c'est que le paiement n'a pas pu aboutir.
         if(paiement.getStatusCode() == HttpStatus.CREATED) {
                 paiementAccepte = true;
                 // Récupérerer la commande et changer le statut "non payée" de cette commande "payée"
-                Optional<CommandeBean> commandeRecuperee = CommandesProxy.recupererUneCommande(idCommande);
+                Optional<CommandeBean> commandeRecuperee = mCommandesProxy.recupererUneCommande(idCommande);
                 if( commandeRecuperee.isPresent() ) {
                 	CommandeBean commandeBean = new CommandeBean();
                 	commandeBean = commandeRecuperee.get();
                 	commandeBean.setCommandePayee(true);
                 	// On met à jour la commande
-                	CommandesProxy.ajouterCommande(commandeBean);
+                	mCommandesProxy.ajouterCommande(commandeBean);
                 }
         }
 
@@ -125,10 +126,41 @@ public class ClientController {
     }    
     
         
-    @RequestMapping (value = "/commandes")
-    public ResponseEntity<CommandeBean> listeCommandes(){
-		return null;    	
+    @RequestMapping (value = "/commandes/{id}")
+    public String ficheCommande( Model model, @PathVariable int id ){
+    	Optional<CommandeBean> commandeRecuperee = mCommandesProxy.recupererUneCommande(id);
+		CommandeBean commande = new CommandeBean();
+    	if( commandeRecuperee.isPresent() ) 
+    		commande = commandeRecuperee.get();
+    	model.addAttribute("commande", commande);
+        return "FicheCommande";
     }
+    
+    //Récupérations de la table PRODUITS
+    @GetMapping (value = "/table-produits")
+    public String tableProduits( Model model ) {
+    	List<ProductBean> produits = mProduitsProxy.listeDesProduits();    	
+    	model.addAttribute("produits", produits);  
+    	return "Table-produits";
+    }
+    
+
+    //Récupérations de la table COMMANDES
+    @GetMapping (value = "/table-commandes")
+    public String tableCommandes( Model model ) {
+    	List<CommandeBean> commandes = mCommandesProxy.listeDesCommandes();    	
+    	model.addAttribute("commandes", commandes);  
+    	return "Table-commandes";
+    }
+    
+    
+    //Récupérations de la table PAIEMENTS
+    @GetMapping (value = "/table-paiements")
+    public String tablePaiements( Model model ) {
+    	List<PaiementBean> paiements = mPaiementProxy.listeDesPaiements();    	
+    	model.addAttribute("paiements", paiements);  
+    	return "Table-paiements";
+    }    
     
     //Génére une serie de 16 chiffres au hasard pour simuler vaguement une CB
     private Long numcarte() {
